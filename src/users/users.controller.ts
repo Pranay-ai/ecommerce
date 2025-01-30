@@ -7,6 +7,9 @@ import { UserEntity } from './entities/user.entity';
 import { UserSignInDto } from './dto/user-signin.dto';
 import { CurrentUser } from 'src/utility/decorators/current-user.decorator';
 import { AuthenticationGaurd } from 'src/utility/gaurds/authentication.gaurd';
+import { AuthorizeRoles } from 'src/utility/decorators/authorize-roles.decorator';
+import { Roles } from 'src/utility/common/user-roles.enum';
+import { AuthorizeGaurd } from 'src/utility/gaurds/authorization.gaurd';
 
 @Controller('users')
 export class UsersController {
@@ -29,10 +32,14 @@ export class UsersController {
 
   }
 
+
+  @UseGuards(AuthenticationGaurd, AuthorizeGaurd([Roles.ADMIN]))
   @Get('all')
   findAllUsers(){
     return this.usersService.findAllUsers();
   }
+
+
   @UseGuards(AuthenticationGaurd)
   @Get('me')
   getProfile(@CurrentUser() currentUser: UserEntity ){
