@@ -46,7 +46,7 @@ export class UsersController {
     return currentUser;
   }
 
-  @Get(':id')
+  @Get('byId/:id')
   findUserById(@Param('id') id: number) {
     return this.usersService.findUserById(id) 
   }
